@@ -4,12 +4,25 @@ import {buildSystemPrompt,cleanHistory,safetyOverride} from "../src/policy.js";
 import {publicCatalog} from "../src/catalog.js";
 import {PEPTIDES_ENABLED} from "../src/knowledge/peptides.js";
 
-test("Fern supports cannabis and kratom as active educational domains",()=>{
- const prompt=buildSystemPrompt();
+test("Fern selects subject-specific knowledge instead of an encyclopedia",()=>{
+ const kratom=buildSystemPrompt("What is mitragynine?");
+ assert.match(kratom,/DOMAIN: KRATOM/);
+ assert.doesNotMatch(kratom,/DOMAIN: CANNABIS/);
+ const cannabis=buildSystemPrompt("Explain THC and CBD");
+ assert.match(cannabis,/DOMAIN: CANNABIS/);
+ assert.doesNotMatch(cannabis,/DOMAIN: KRATOM/);
+ const mushrooms=buildSystemPrompt("What are functional mushrooms?");
+ assert.match(mushrooms,/DOMAIN: FUNCTIONAL MUSHROOM/);
+});
+test("Switching subjects follows the latest customer question",()=>{
+ const history=[{role:"user",content:"Explain kratom colors"}];
+ const prompt=buildSystemPrompt("Now tell me about THC",history);
  assert.match(prompt,/DOMAIN: CANNABIS/);
+ assert.doesNotMatch(prompt,/DOMAIN: KRATOM/);
+});
+test("Topic follow-up works when the customer asks a contextual question",()=>{
+ const prompt=buildSystemPrompt("How does that work?",[{role:"user",content:"What's mitragynine?"}]);
  assert.match(prompt,/DOMAIN: KRATOM/);
- assert.match(prompt,/DOMAIN: FUNCTIONAL MUSHROOM/);
- assert.match(prompt,/question/);
 });
 test("Peptide module remains disabled",()=>{
  assert.equal(PEPTIDES_ENABLED,false);
@@ -39,10 +52,11 @@ test("Provisional catalog is explicitly unverified",()=>{
  assert.match(publicCatalog().disclaimer,/unverified/);
 });
 
-test("Fern stays rooted in Odyssey brand but does not invent quality claims",()=>{
- const prompt=buildSystemPrompt();
- assert.match(prompt,/You represent Odyssey Herbals/);
- assert.match(prompt,/Do not generically recommend customers shop at competing vendors/);
- assert.match(prompt,/Never invent a certificate of analysis/);
- assert.match(prompt,/ONE thoughtful follow-up question/);
+test("Fern stays warm, conversational and grounded in Odyssey",()=>{
+ const prompt=buildSystemPrompt("I'm new to kratom");
+ assert.match(prompt,/Warm, welcoming, attentive, curious/);
+ assert.match(prompt,/ONE specific, natural follow-up question/);
+ assert.match(prompt,/not an independent shopping directory/);
+ assert.match(prompt,/Never invent Odyssey prices, ingredients/);
+ assert.match(prompt,/Never assert that yellow is a blend/);
 });
