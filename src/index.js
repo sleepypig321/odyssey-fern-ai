@@ -42,7 +42,7 @@ async function answer(request, env) {
   if (intervention) return json({reply:intervention, safetyNotice:true});
   if (!env.AI) return json({error:"Fern's AI is not configured yet."},503);
   const history = cleanHistory(data.history);
-  const system = buildSystemPrompt();
+  const system = buildSystemPrompt(message, history);
   const messages = [{role:"system",content:system}, ...history, {role:"user",content:message}];
   // Never wait forever for queued or stalled AI inference.
   let timer;
@@ -90,7 +90,7 @@ export default {
       if (path === "/embed.js") {
         return new Response(EMBED_SCRIPT,{headers:{"Content-Type":"application/javascript; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"public, max-age=600"}});
       }
-      if (path === "/api/health") return json({service:"Fern", ready:!!env.AI, catalogVerified:false, peptidesEnabled:false, externalApiEnabled:!!env.FERN_API_KEY, build:"fresh-chat-diagnostics-2026-10-14"});
+      if (path === "/api/health") return json({service:"Fern", ready:!!env.AI, catalogVerified:false, peptidesEnabled:false, externalApiEnabled:!!env.FERN_API_KEY, build:"warm-conversation-2026-10-14"});
       if (path === "/api/catalog") return json(publicCatalog());
       return json({error:"Not found."},404);
     }
