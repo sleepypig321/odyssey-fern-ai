@@ -38,3 +38,11 @@ test("Provisional catalog is explicitly unverified",()=>{
  assert.equal(publicCatalog().reviewed,false);
  assert.match(publicCatalog().disclaimer,/unverified/);
 });
+
+test("Fern stays rooted in Odyssey brand but does not invent quality claims",()=>{
+ const prompt=buildSystemPrompt();
+ assert.match(prompt,/You represent Odyssey Herbals/);
+ assert.match(prompt,/Do not generically recommend customers shop at competing vendors/);
+ assert.match(prompt,/Never invent a certificate of analysis/);
+ assert.match(prompt,/ONE thoughtful follow-up question/);
+});
