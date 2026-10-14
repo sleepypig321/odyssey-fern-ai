@@ -1,4 +1,5 @@
 import { HTML } from "./ui.js";
+import { finishReply } from "./reply.js";
 import { EMBED_SCRIPT } from "./embed.js";
 import { publicCatalog } from "./catalog.js";
 import { buildSystemPrompt, cleanHistory, safetyOverride } from "./policy.js";
@@ -48,7 +49,7 @@ async function answer(request, env) {
   try {
     const modelResult = env.AI.run(
       env.AI_MODEL || "@cf/meta/llama-3.1-8b-instruct-fp8",
-      {messages, max_tokens:400, temperature:0.45},
+      {messages, max_tokens:650, temperature:0.35},
       {rejectIfBusy:true}
     );
     const result = await Promise.race([
@@ -59,7 +60,7 @@ async function answer(request, env) {
     ]);
     const reply = typeof result?.response === "string" ? result.response.trim() : "";
     if (!reply) return json({error:"Fern received an empty AI response. Please try again."},502);
-    return json({reply});
+    return json({reply: finishReply(reply, 150)});
   } catch (error) {
     const details = String(error?.message || error || "");
     console.error("Fern AI inference failed:", details);
@@ -88,7 +89,7 @@ export default {
       if (path === "/embed.js") {
         return new Response(EMBED_SCRIPT,{headers:{"Content-Type":"application/javascript; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"public, max-age=600"}});
       }
-      if (path === "/api/health") return json({service:"Fern", ready:!!env.AI, catalogVerified:false, peptidesEnabled:false, externalApiEnabled:!!env.FERN_API_KEY, build:"stability-2026-10-14"});
+      if (path === "/api/health") return json({service:"Fern", ready:!!env.AI, catalogVerified:false, peptidesEnabled:false, externalApiEnabled:!!env.FERN_API_KEY, build:"concise-replies-2026-10-14"});
       if (path === "/api/catalog") return json(publicCatalog());
       return json({error:"Not found."},404);
     }
