@@ -70,5 +70,5 @@ test("Cloudflare daily AI allocation produces a readable message",async()=>{
 });
 test("Health endpoint marks the stability-fix version",async()=>{
  const response=await app.fetch(new Request(origin+"/api/health"),env);
- assert.equal((await response.json()).build,"fresh-chat-diagnostics-2026-10-14");
+ assert.equal((await response.json()).build,"warm-conversation-2026-10-14");
 });
