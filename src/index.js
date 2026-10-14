@@ -90,7 +90,7 @@ export default {
       if (path === "/embed.js") {
         return new Response(EMBED_SCRIPT,{headers:{"Content-Type":"application/javascript; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"public, max-age=600"}});
       }
-      if (path === "/api/health") return json({service:"Fern", ready:!!env.AI, catalogVerified:false, peptidesEnabled:false, externalApiEnabled:!!env.FERN_API_KEY, build:"concise-replies-2026-10-14"});
+      if (path === "/api/health") return json({service:"Fern", ready:!!env.AI, catalogVerified:false, peptidesEnabled:false, externalApiEnabled:!!env.FERN_API_KEY, build:"fresh-chat-diagnostics-2026-10-14"});
       if (path === "/api/catalog") return json(publicCatalog());
       return json({error:"Not found."},404);
     }
