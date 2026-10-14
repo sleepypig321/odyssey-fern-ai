@@ -11,12 +11,16 @@ export function buildSystemPrompt(message = "", history = []) {
     ? history.filter(turn => turn?.role === "user")
         .slice(-3).map(turn => String(turn.content || "")) : [];
   const context = [message, ...recentCustomerMessages].join(" ").toLowerCase();
-  const domain = /kratom|maeng da|mitragynine|hydroxymitragynine|7.oh|alkaloid/.test(context)
+  const detectDomain = (text) => /kratom|maeng da|mitragynine|hydroxymitragynine|7.oh|alkaloid/.test(text)
     ? "kratom"
-    : /cannabis|marijuana|thc|cbd|cannabinoid|terpene|indica|sativa|weed/.test(context)
+    : /cannabis|marijuana|thc|cbd|cannabinoid|terpene|indica|sativa|weed/.test(text)
       ? "cannabis"
-      : /mushroom|lion.s mane|reishi|cordyceps|chaga|turkey tail/.test(context)
+      : /mushroom|lion.s mane|reishi|cordyceps|chaga|turkey tail/.test(text)
         ? "mushrooms" : "general";
+  // Current question wins over older topics (e.g. switching from kratom to THC).
+  const domain = detectDomain(String(message).toLowerCase()) !== "general"
+    ? detectDomain(String(message).toLowerCase())
+    : detectDomain(recentCustomerMessages.slice(-1).join(" ").toLowerCase());
   const knowledge = domain === "kratom" ? KRATOM_KNOWLEDGE
     : domain === "cannabis" ? CANNABIS_KNOWLEDGE
     : domain === "mushrooms" ? MUSHROOM_KNOWLEDGE : "";
