@@ -60,7 +60,8 @@ async function answer(request, env) {
     ]);
     const reply = typeof result?.response === "string" ? result.response.trim() : "";
     if (!reply) return json({error:"Fern received an empty AI response. Please try again."},502);
-    return json({reply: finishReply(reply, 150)});
+    const wantsDetail = /in.depth|detailed|explain more|go deeper|thorough|comprehensive/i.test(message);
+    return json({reply: finishReply(reply, wantsDetail ? 200 : 150)});
   } catch (error) {
     const details = String(error?.message || error || "");
     console.error("Fern AI inference failed:", details);
