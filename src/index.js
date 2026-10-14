@@ -49,7 +49,7 @@ async function answer(request, env) {
   try {
     const modelResult = env.AI.run(
       env.AI_MODEL || "@cf/meta/llama-3.1-8b-instruct-fp8",
-      {messages, max_tokens:650, temperature:0.35},
+      {messages, max_tokens:650, temperature:0.55},
       {rejectIfBusy:true}
     );
     const result = await Promise.race([
