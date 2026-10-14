@@ -55,3 +55,20 @@ test("Crisis request receives deterministic guidance",async()=>{
  assert.equal(result.safetyNotice,true);
  assert.match(result.reply,/911/);
 });
+
+test("Cloudflare capacity errors display a readable message instead of freezing",async()=>{
+ const busyAI = {run:async()=>{throw new Error("3040 Capacity temporarily exceeded, please try again.");}};
+ const response=await app.fetch(request("/api/chat",body("What is CBD?")),{...env,AI:busyAI});
+ assert.equal(response.status,503);
+ assert.match((await response.json()).error,/busy right now/);
+});
+test("Cloudflare daily AI allocation produces a readable message",async()=>{
+ const limitedAI = {run:async()=>{throw new Error("3036 daily free allocation used");}};
+ const response=await app.fetch(request("/api/chat",body("What is CBD?")),{...env,AI:limitedAI});
+ assert.equal(response.status,503);
+ assert.match((await response.json()).error,/daily AI allowance/);
+});
+test("Health endpoint marks the stability-fix version",async()=>{
+ const response=await app.fetch(new Request(origin+"/api/health"),env);
+ assert.equal((await response.json()).build,"stability-2026-10-14");
+});
