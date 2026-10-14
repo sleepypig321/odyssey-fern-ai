@@ -43,17 +43,38 @@ async function answer(request, env) {
   const history = cleanHistory(data.history);
   const system = buildSystemPrompt();
   const messages = [{role:"system",content:system}, ...history, {role:"user",content:message}];
+  // Never wait forever for queued or stalled AI inference.
+  let timer;
   try {
-    const result = await env.AI.run(
+    const modelResult = env.AI.run(
       env.AI_MODEL || "@cf/meta/llama-3.1-8b-instruct-fp8",
-      {messages, max_tokens:650, temperature:0.5}
+      {messages, max_tokens:400, temperature:0.45},
+      {rejectIfBusy:true}
     );
+    const result = await Promise.race([
+      modelResult,
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(new Error("FERN_MODEL_TIMEOUT")), 30000);
+      })
+    ]);
     const reply = typeof result?.response === "string" ? result.response.trim() : "";
-    if (!reply) return json({error:"Fern couldn't complete her response. Please try again."},502);
+    if (!reply) return json({error:"Fern received an empty AI response. Please try again."},502);
     return json({reply});
   } catch (error) {
-    console.error("Fern model error", String(error));
-    return json({error:"Fern is temporarily unavailable. Please try again shortly."},503);
+    const details = String(error?.message || error || "");
+    console.error("Fern AI inference failed:", details);
+    if (details.includes("FERN_MODEL_TIMEOUT")) {
+      return json({error:"Fern's AI took too long to answer (30 seconds). Please try again shortly."},504);
+    }
+    if (/3040|out of capacity|capacity temporarily exceeded|busy/i.test(details)) {
+      return json({error:"Cloudflare's AI is busy right now. Please try again in a moment."},503);
+    }
+    if (/3036|daily free allocation|daily.*(limit|quota)/i.test(details)) {
+      return json({error:"Fern has reached Cloudflare's daily AI allowance. The allowance will reset later."},503);
+    }
+    return json({error:"Cloudflare AI couldn't complete the request. Please try again shortly."},503);
+  } finally {
+    if (timer !== undefined) clearTimeout(timer);
   }
 }
 export default {
@@ -67,7 +88,7 @@ export default {
       if (path === "/embed.js") {
         return new Response(EMBED_SCRIPT,{headers:{"Content-Type":"application/javascript; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"public, max-age=600"}});
       }
-      if (path === "/api/health") return json({service:"Fern", ready:!!env.AI, catalogVerified:false, peptidesEnabled:false, externalApiEnabled:!!env.FERN_API_KEY});
+      if (path === "/api/health") return json({service:"Fern", ready:!!env.AI, catalogVerified:false, peptidesEnabled:false, externalApiEnabled:!!env.FERN_API_KEY, build:"stability-2026-10-14"});
       if (path === "/api/catalog") return json(publicCatalog());
       return json({error:"Not found."},404);
     }
