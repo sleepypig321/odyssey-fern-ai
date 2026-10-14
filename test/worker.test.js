@@ -15,10 +15,24 @@ test("GET / provides an accessible standalone chat UI",async()=>{
  assert.equal(response.status,200);
  assert.match(await response.text(),/Your botanical guide/);
 });
-test("GET /embed.js provides a floating-chat embed script",async()=>{
+test("GET /embed.js provides a compact, persistent Ask Fern launcher",async()=>{
  const response=await app.fetch(new Request(origin+"/embed.js"),env);
  assert.equal(response.status,200);
- assert.match(await response.text(),/fern-odyssey-launcher/);
+ const script=await response.text();
+ assert.match(script,/fern-odyssey-launcher/);
+ assert.match(script,/Ask Fern/);
+ assert.match(script,/FERN_SESSION_RESTORE/);
+ assert.match(script,/FERN_SESSION_SAVE/);
+ assert.match(script,/frame.style.display/);
+});
+test("Customer chat hides developer build label and restores session history",async()=>{
+ const response=await app.fetch(new Request(origin+"/"),env);
+ const page=await response.text();
+ assert.doesNotMatch(page,/id="build-info"/);
+ assert.doesNotMatch(page,/Build: /);
+ assert.match(page,/FERN_SESSION_RESTORE/);
+ assert.match(page,/FERN_SESSION_CLEAR/);
+ assert.match(page,/sessionStorage/);
 });
 test("GET /api/catalog is explicitly provisional",async()=>{
  const response=await app.fetch(new Request(origin+"/api/catalog"),env);
