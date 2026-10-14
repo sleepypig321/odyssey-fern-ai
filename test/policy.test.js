@@ -26,7 +26,7 @@ test("Topic follow-up works when the customer asks a contextual question",()=>{
 });
 test("Peptide module remains disabled",()=>{
  assert.equal(PEPTIDES_ENABLED,false);
- assert.match(buildSystemPrompt(),/Peptide product advising is not yet enabled/);
+ assert.match(buildSystemPrompt(),/Peptide advising is not currently enabled/);
 });
 test("Crisis message gets deterministic emergency guidance",()=>{
  assert.match(safetyOverride("I think they overdosed"),/emergency/i);
