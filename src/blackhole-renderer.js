@@ -59,9 +59,9 @@ void main(){
  col+=diskLight*diskMask*1.8;
  col+=vec3(2.5,1.3,.65)*middle*diskTexture*.42;
  // Gravitationally lensed upper and lower arcs above the shadow.
- float arc=exp(-pow((r-.255)/.026,2.))*smoothstep(-.12,.24,uv.y/r);
+ float arc=exp(-pow((r-.255)/.026,2.))*smoothstep(-.12,.24,uv.y/max(r,.001));
  col+=vec3(1.75,1.15,.77)*arc*.85;
- float lowerArc=exp(-pow((r-.257)/.034,2.))*(1.-smoothstep(-.8,.1,uv.y/r));
+ float lowerArc=exp(-pow((r-.257)/.034,2.))*(1.-smoothstep(-.8,.1,uv.y/max(r,.001)));
  col+=vec3(.7,.48,.76)*lowerArc*.26;
  // The photon ring is unevenly bright, like light beamed toward an observer.
  float photon=exp(-pow((r-.197)/.012,2.))*(.4+.6*smoothstep(-.9,.8,cos(angle+1.2)));
