@@ -61,7 +61,7 @@ void main(){
  // Gravitationally lensed upper and lower arcs above the shadow.
  float arc=exp(-pow((r-.255)/.026,2.))*smoothstep(-.12,.24,uv.y/r);
  col+=vec3(1.75,1.15,.77)*arc*.85;
- float lowerArc=exp(-pow((r-.257)/.034,2.))*smoothstep(.1,-.8,uv.y/r);
+ float lowerArc=exp(-pow((r-.257)/.034,2.))*(1.-smoothstep(-.8,.1,uv.y/r));
  col+=vec3(.7,.48,.76)*lowerArc*.26;
  // The photon ring is unevenly bright, like light beamed toward an observer.
  float photon=exp(-pow((r-.197)/.012,2.))*(.4+.6*smoothstep(-.9,.8,cos(angle+1.2)));
@@ -96,6 +96,7 @@ void main(){
     document.documentElement.classList.add('no-blackhole-webgl');return;
   }
   gl.useProgram(program);
+  document.documentElement.classList.add('has-blackhole-webgl');
   const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);
   gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);
   const loc=gl.getAttribLocation(program,'position');
