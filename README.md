@@ -68,3 +68,5 @@ Fern itself has no conversation database. The widget retains conversation turns 
 This branch is a standalone prototype for The Creative Universe. Its homepage is the experimental WebGL universe and local-only idea map. The original Odyssey Herbals Fern assistant remains on `main` and is not changed by this branch.
 
 Deploy this branch to the separate Cloudflare Worker `the-creative-universe` with Workers Builds production branch set to `creative-universe`. The prototype currently stores ideas only in browser localStorage and does not yet provide accounts, cloud synchronization, or live Fern/Lyra AI conversations.
+
+Deployment trigger: 2026-11-05 — retry after Cloudflare branch configuration verification.
