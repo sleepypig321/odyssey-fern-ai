@@ -78,6 +78,28 @@ body.white-emergence .white-flash{visibility:visible;animation:white-birth 1.65s
 @keyframes white-birth{0%{opacity:0}25%{opacity:1}65%{opacity:1}100%{opacity:0}}
 @media(prefers-reduced-motion:reduce){.hole-disk{animation:none!important}body.entering-universe .star-entry,body.entering-universe #space{transition:none!important}body.white-emergence .white-flash{animation:none!important;display:none!important}}
 
+
+/* V2: a single GPU-rendered environment replaces the layered CSS illustration. */
+#blackhole-space{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;display:block}
+.has-blackhole-webgl .star-entry:before,.has-blackhole-webgl .star-entry:after,
+.has-blackhole-webgl .hole-lens,.has-blackhole-webgl .hole-disk,.has-blackhole-webgl .hole-arcs{display:none!important}
+.has-blackhole-webgl .star-entry{border:0;outline-offset:15px;filter:none!important}
+.has-blackhole-webgl .star-entry:hover{transform:translate(-50%,-50%) scale(1.04)}
+.has-blackhole-webgl body.entering-universe .star-entry{transform:translate(-50%,-50%);opacity:0;transition:opacity .4s ease}
+.has-blackhole-webgl body.entering-universe #space{transform:scale(1.5);filter:blur(2px) brightness(.4)}
+.has-blackhole-webgl .auth-wall{background:radial-gradient(ellipse at center,#03070b00 0%,#01020891 72%,#000e 100%)}
+.has-blackhole-webgl .auth-wall:before{background:linear-gradient(90deg,#0009,transparent 30%,transparent 70%,#0009)}
+.has-blackhole-webgl .auth-wall:after{opacity:.12}
+.cosmic-eyebrow{top:38px;left:clamp(20px,5vw,88px);right:auto;letter-spacing:.28em;text-align:left}
+.cosmic-headline{top:17%;left:clamp(20px,6vw,100px);right:auto;width:min(340px,34vw);text-align:left;font:400 clamp(32px,3.6vw,57px)/1.07 Georgia,serif;text-shadow:0 3px 38px #000}
+.cosmic-headline em{display:block;font-style:italic;color:#f2d2a2}
+.star-entry{top:52%;width:min(36vw,470px);height:min(36vw,470px)}
+.star-label{top:calc(100% + 8px);letter-spacing:.22em}
+.cosmic-footer{bottom:30px;font-size:10px;letter-spacing:.23em}
+.auth-card{z-index:7}
+@media(max-width:800px){.cosmic-headline{top:13%;left:6%;width:88%;text-align:center;font-size:clamp(34px,7vw,51px)}.cosmic-eyebrow{left:0;right:0;text-align:center;font-size:9px;top:22px}.star-entry{top:50%;width:70vw;height:70vw}.star-label{top:calc(100% + 35px);font-size:10px}.cosmic-footer{bottom:18px;font-size:9px}}
+@media(max-width:480px){.star-entry{width:84vw;height:84vw}.star-label{top:calc(100% + 8px)}}
+
 @media(max-width:650px){.cosmic-headline{top:15%;font-size:clamp(35px,10vw,55px)}.star-entry{top:49%}.star-label{font-size:10px}.auth-card{padding:26px}.cosmic-footer{font-size:9px}}
 @media(prefers-reduced-motion:reduce){#space,.auth-card,.star-entry{transition:none!important}.star-entry:before{animation:none!important}}
 
@@ -90,7 +112,8 @@ body.white-emergence .white-flash{visibility:visible;animation:white-birth 1.65s
 <aside class="idea-list" id="ideas" aria-label="Saved ideas"></aside>
 <nav class="actions"><button id="add">+ Create an idea</button><button id="all">View all stars</button></nav>
 <div id="modal"></div><div class="white-flash" aria-hidden="true"></div>
-<section class="auth-wall" id="auth-wall"><div class="cosmic-eyebrow">THE CREATIVE UNIVERSE &nbsp; · &nbsp; FERN & LYRA</div><div class="cosmic-headline">Beyond the <em>event horizon.</em></div><button type="button" class="star-entry" id="portal-star" aria-label="Enter the black hole to sign in"><span class="hole-lens"></span><span class="hole-disk"></span><span class="hole-arcs"></span><span class="star-label">Cross the event horizon<small>✦ Click the black hole to enter ✦</small></span></button><div class="cosmic-footer">EVERY UNIVERSE BEGINS WITH A LEAP INTO THE UNKNOWN</div><form class="auth-card" id="auth-form"><button class="portal-back" type="button" id="portal-back" aria-label="Return to galaxy">← Back to galaxy</button><div class="tag">A private universe for every mind</div><h2>Enter your universe.</h2><p>Sign in or create an account to save your stars across devices.</p><input id="email" type="email" autocomplete="email" placeholder="Email address" required><input id="password" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required><div class="auth-buttons"><button type="submit">Sign in</button><button class="secondary" type="button" id="signup">Create account</button></div><p class="auth-error" id="auth-error" role="status"></p></form></section>
+<section class="auth-wall" id="auth-wall"><canvas id="blackhole-space" aria-hidden="true"></canvas><div class="cosmic-eyebrow">THE CREATIVE UNIVERSE &nbsp; · &nbsp; FERN & LYRA</div><div class="cosmic-headline">Beyond the <em>event horizon.</em></div><button type="button" class="star-entry" id="portal-star" aria-label="Enter the black hole to sign in"><span class="hole-lens"></span><span class="hole-disk"></span><span class="hole-arcs"></span><span class="star-label">Cross the event horizon<small>✦ Click the black hole to enter ✦</small></span></button><div class="cosmic-footer">EVERY UNIVERSE BEGINS WITH A LEAP INTO THE UNKNOWN</div><form class="auth-card" id="auth-form"><button class="portal-back" type="button" id="portal-back" aria-label="Return to galaxy">← Back to galaxy</button><div class="tag">A private universe for every mind</div><h2>Enter your universe.</h2><p>Sign in or create an account to save your stars across devices.</p><input id="email" type="email" autocomplete="email" placeholder="Email address" required><input id="password" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required><div class="auth-buttons"><button type="submit">Sign in</button><button class="secondary" type="button" id="signup">Create account</button></div><p class="auth-error" id="auth-error" role="status"></p></form></section>
+<script src="/blackhole.js" defer></script>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.95.0/+esm';
 const db=createClient('https://gzsxyjysdrqzqeeqadbu.supabase.co','sb_publishable_wPJwCUJl6ytV8XzfmjTX0g_Nm8D2kax');
