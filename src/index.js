@@ -85,8 +85,8 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
     if (request.method === "GET") {
-      if (path === "/universe") return new Response(UNIVERSE_HTML,{headers:{"Content-Type":"text/html; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"no-store"}});
-      if (path === "/" || path === "/index.html") {
+      if (path === "/" || path === "/index.html" || path === "/universe") return new Response(UNIVERSE_HTML,{headers:{"Content-Type":"text/html; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"no-store"}});
+      if (path === "/fern") {
         return new Response(HTML,{headers:{"Content-Type":"text/html; charset=utf-8","X-Content-Type-Options":"nosniff","Referrer-Policy":"no-referrer","Cache-Control":"no-store"}});
       }
       if (path === "/embed.js") {
