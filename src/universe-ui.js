@@ -105,6 +105,29 @@ body.white-emergence .white-flash{visibility:visible;animation:white-birth 1.65s
 
 @media(max-width:650px){.top{padding:17px}.tag{display:none}.intro{top:30%}.idea-list{top:auto;bottom:95px;left:18px;right:18px;width:auto;max-height:28vh}.actions{bottom:20px}.actions button{padding:10px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Cinematic image-led event horizon. The shader remains a fallback until artwork is present. */
+#blackhole-art{position:absolute;inset:0;z-index:3;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;pointer-events:none;transform-origin:79% 47%;filter:saturate(1.06);transition:opacity .7s ease,filter 1.2s ease}
+.auth-wall.has-portal-art #blackhole-art{opacity:1;animation:art-drift 15s ease-in-out infinite alternate}
+.auth-wall.has-portal-art #blackhole-space{opacity:0;transition:opacity .6s}
+.auth-wall.has-portal-art .star-entry{left:79%;top:47%;width:clamp(170px,32vw,510px);height:clamp(170px,32vw,510px)}
+.auth-wall.has-portal-art .star-label{top:calc(100% + 4px);padding:9px 13px;background:#02030a8a;border-radius:20px;text-shadow:0 2px 12px #000}
+.auth-wall.has-portal-art .star-entry:hover{transform:translate(-50%,-50%) scale(1.045)}
+.auth-wall.has-portal-art .star-entry:hover~.cosmic-footer{opacity:.8}
+#warp-tunnel{position:fixed;inset:0;z-index:12;opacity:0;visibility:hidden;pointer-events:none;overflow:hidden;background:#000;transition:opacity .3s}
+#warp-tunnel:before{content:"";position:absolute;inset:-60%;background:repeating-conic-gradient(from 0deg at 50% 50%,transparent 0deg 4deg,#9fcaff2c 4.5deg 4.9deg,transparent 5.2deg 10deg);filter:blur(5px);transform:scale(.15);opacity:0}
+#warp-tunnel:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at center,#fff 0%,#e7f6ff 3%,#9cc8ff 7%,#3b519b 13%,transparent 31%);opacity:0;transform:scale(.04)}
+body.portal-warp #warp-tunnel{visibility:visible;opacity:1}
+body.portal-warp #warp-tunnel:before{animation:warp-lines 1.25s cubic-bezier(.12,.45,.25,1) forwards}
+body.portal-exit #warp-tunnel:after{animation:hole-birth 1.35s ease-out forwards}
+body.portal-dive .auth-wall.has-portal-art #blackhole-art{animation:none;transform:scale(4.5);filter:brightness(.24) blur(4px);transition:transform 1.05s cubic-bezier(.6,.05,.8,.6),filter 1s}
+body.portal-dive .auth-wall.has-portal-art .star-entry{opacity:0;pointer-events:none}
+body.portal-exit .auth-wall{background:#02050c}
+@keyframes art-drift{from{transform:scale(1.025) translate3d(-.3%,0,0)}to{transform:scale(1.075) translate3d(.3%,-.3%,0)}}
+@keyframes warp-lines{0%{opacity:0;transform:scale(.12) rotate(0)}35%{opacity:.9}100%{opacity:1;transform:scale(2.9) rotate(45deg)}}
+@keyframes hole-birth{0%{opacity:0;transform:scale(.04)}30%{opacity:1;transform:scale(.4)}70%{opacity:1;transform:scale(4)}100%{opacity:0;transform:scale(13)}}
+@media(max-width:800px){.auth-wall.has-portal-art #blackhole-art{object-position:66% center}.auth-wall.has-portal-art .star-entry{left:71%;top:49%;width:52vw;height:52vw}.auth-wall.has-portal-art .cosmic-headline{top:12%;font-size:clamp(32px,8vw,48px)}}
+@media(prefers-reduced-motion:reduce){.auth-wall.has-portal-art #blackhole-art{animation:none!important}#warp-tunnel{display:none!important}}
 </style></head><body>
 <canvas id="space" aria-label="Three-dimensional starfield and spiral galaxies"></canvas>
 <header class="top"><div><div class="brand">THE CREATIVE UNIVERSE</div><div class="tag">Fern &amp; Lyra · early prototype</div></div><div><button id="belt">Asteroid Belt</button> <button id="signout" hidden>Sign out</button></div></header>
@@ -112,7 +135,7 @@ body.white-emergence .white-flash{visibility:visible;animation:white-birth 1.65s
 <aside class="idea-list" id="ideas" aria-label="Saved ideas"></aside>
 <nav class="actions"><button id="add">+ Create an idea</button><button id="all">View all stars</button></nav>
 <div id="modal"></div><div class="white-flash" aria-hidden="true"></div>
-<section class="auth-wall" id="auth-wall"><canvas id="blackhole-space" aria-hidden="true"></canvas><div class="cosmic-eyebrow">THE CREATIVE UNIVERSE &nbsp; · &nbsp; FERN & LYRA</div><div class="cosmic-headline">Beyond the <em>event horizon.</em></div><button type="button" class="star-entry" id="portal-star" aria-label="Enter the black hole to sign in"><span class="hole-lens"></span><span class="hole-disk"></span><span class="hole-arcs"></span><span class="star-label">Cross the event horizon<small>✦ Click the black hole to enter ✦</small></span></button><div class="cosmic-footer">EVERY UNIVERSE BEGINS WITH A LEAP INTO THE UNKNOWN</div><form class="auth-card" id="auth-form"><button class="portal-back" type="button" id="portal-back" aria-label="Return to galaxy">← Back to galaxy</button><div class="tag">A private universe for every mind</div><h2>Enter your universe.</h2><p>Sign in or create an account to save your stars across devices.</p><input id="email" type="email" autocomplete="email" placeholder="Email address" required><input id="password" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required><div class="auth-buttons"><button type="submit">Sign in</button><button class="secondary" type="button" id="signup">Create account</button></div><p class="auth-error" id="auth-error" role="status"></p></form></section>
+<section class="auth-wall" id="auth-wall"><canvas id="blackhole-space" aria-hidden="true"></canvas><img id="blackhole-art" src="/blackhole-art.png" alt="" aria-hidden="true"><div id="warp-tunnel" aria-hidden="true"></div><div class="cosmic-eyebrow">THE CREATIVE UNIVERSE &nbsp; · &nbsp; FERN & LYRA</div><div class="cosmic-headline">Beyond the <em>event horizon.</em></div><button type="button" class="star-entry" id="portal-star" aria-label="Enter the black hole to sign in"><span class="hole-lens"></span><span class="hole-disk"></span><span class="hole-arcs"></span><span class="star-label">Cross the event horizon<small>✦ Click the black hole to enter ✦</small></span></button><div class="cosmic-footer">EVERY UNIVERSE BEGINS WITH A LEAP INTO THE UNKNOWN</div><form class="auth-card" id="auth-form"><button class="portal-back" type="button" id="portal-back" aria-label="Return to galaxy">← Back to galaxy</button><div class="tag">A private universe for every mind</div><h2>Enter your universe.</h2><p>Sign in or create an account to save your stars across devices.</p><input id="email" type="email" autocomplete="email" placeholder="Email address" required><input id="password" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required><div class="auth-buttons"><button type="submit">Sign in</button><button class="secondary" type="button" id="signup">Create account</button></div><p class="auth-error" id="auth-error" role="status"></p></form></section>
 <script src="/blackhole.js" defer></script>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.95.0/+esm';
@@ -122,7 +145,24 @@ const errText=e=>e?.message||'Something went wrong. Please try again.';
 async function loadIdeas(){if(!currentUser){ideas=[];renderList();return}const {data,error}=await db.from('creative_universe_ideas').select('id,title,description,status,created_at').order('created_at',{ascending:false});if(error){alert(errText(error));return}ideas=data||[];renderList()}
 function setUser(user){const entering=!!user&&!currentUser&&document.getElementById('auth-wall').classList.contains('portal-open');currentUser=user;document.getElementById('signout').hidden=!user;if(entering){document.body.classList.add('white-emergence');setTimeout(()=>{document.getElementById('auth-wall').hidden=true;document.getElementById('auth-wall').classList.remove('portal-open');document.body.classList.remove('white-emergence');loadIdeas()},matchMedia('(prefers-reduced-motion: reduce)').matches?0:1650)}else{document.getElementById('auth-wall').hidden=!!user;loadIdeas()}}
 const portalWall=document.getElementById('auth-wall');let portalTimer=null;
-document.getElementById('portal-star').onclick=()=>{if(portalWall.classList.contains('portal-open'))return;document.body.classList.add('entering-universe');clearTimeout(portalTimer);portalTimer=setTimeout(()=>{document.body.classList.remove('entering-universe');portalWall.classList.add('portal-open');document.getElementById('email').focus()},matchMedia('(prefers-reduced-motion: reduce)').matches?0:1100)};
+const artwork=document.getElementById('blackhole-art');
+artwork.addEventListener('load',()=>portalWall.classList.add('has-portal-art'));
+artwork.addEventListener('error',()=>portalWall.classList.remove('has-portal-art'));
+if(artwork.complete&&artwork.naturalWidth)portalWall.classList.add('has-portal-art');
+document.getElementById('portal-star').onclick=()=>{
+ if(portalWall.classList.contains('portal-open')||document.body.classList.contains('portal-dive'))return;
+ clearTimeout(portalTimer);
+ const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ if(reduced){portalWall.classList.add('portal-open');document.getElementById('email').focus();return}
+ document.body.classList.add('entering-universe','portal-dive');
+ portalTimer=setTimeout(()=>document.body.classList.add('portal-warp'),750);
+ setTimeout(()=>document.body.classList.add('portal-exit'),1600);
+ setTimeout(()=>{
+  document.body.classList.remove('entering-universe','portal-dive','portal-warp','portal-exit');
+  portalWall.classList.add('portal-open');
+  document.getElementById('email').focus();
+ },2900);
+};
 document.getElementById('portal-back').onclick=()=>{clearTimeout(portalTimer);document.body.classList.remove('entering-universe');portalWall.classList.remove('portal-open');document.getElementById('portal-star').focus()};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!portalWall.hidden&&portalWall.classList.contains('portal-open'))document.getElementById('portal-back').click()});
 const authError=document.getElementById('auth-error');document.getElementById('auth-form').onsubmit=async e=>{e.preventDefault();authError.textContent='Signing in…';const {error}=await db.auth.signInWithPassword({email:document.getElementById('email').value,password:document.getElementById('password').value});authError.textContent=error?errText(error):''};
