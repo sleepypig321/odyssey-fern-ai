@@ -53,6 +53,31 @@ body.entering-universe #space{transform:scale(3.7);filter:brightness(1.8) blur(2
 @keyframes star-breathe{50%{filter:brightness(1.6) blur(1px);box-shadow:0 0 60px 14px #edcae688,0 0 150px 50px #ac83de7a}}
 body.entering-universe .auth-wall{background:radial-gradient(circle at 50% 50%,#eacbce77,#0a0713bc 50%,#000b)}
 body.entering-universe .star-entry{transform:translate(-50%,-50%) scale(3.3);opacity:0;pointer-events:none}
+
+/* Black-hole gateway: layered event horizon, accretion disk, and lensing glow. */
+.cosmic-headline{top:clamp(86px,15vh,166px);font-size:clamp(35px,5.5vw,76px)}
+.star-entry{top:54%;width:clamp(210px,31vw,390px);height:clamp(210px,31vw,390px);overflow:visible}
+.star-entry:before{inset:17%;background:radial-gradient(circle at 50% 50%,#000 0 43%,#040407 54%,#bd8c505c 66%,#f8d6a6b0 69%,transparent 75%);filter:none;box-shadow:0 0 48px 9px #e8a56345,0 0 135px 32px #a96d6930;animation:none;z-index:3}
+.star-entry:after{display:none}
+.star-orbit,.star-orbit.second{display:none}
+.hole-disk{position:absolute;inset:8%;border-radius:50%;transform:rotate(-29deg) scaleY(.38);background:conic-gradient(from 45deg,#fdf0d0,#ecab5f 14%,#7e3d32 27%,#f8b86e 41%,#fff2c9 55%,#ab663d 73%,#2f2c40 85%,#fdf0d0);box-shadow:0 0 22px 5px #ffcc8b80,0 0 70px 16px #a66b6a55;filter:blur(3px);animation:accrete 17s linear infinite;z-index:2;pointer-events:none}
+.hole-disk:before{content:"";position:absolute;inset:17%;border-radius:50%;background:#040508;box-shadow:inset 0 0 20px #000}
+.hole-lens{position:absolute;inset:10%;border:2px solid #e8c19b8c;transform:rotate(22deg) scaleY(.76);border-radius:50%;box-shadow:0 0 26px #f6dcaa91,0 0 80px #5a7eb044;z-index:1;pointer-events:none}
+.hole-arcs{position:absolute;inset:14%;border-radius:50%;border:2px solid transparent;border-top-color:#fff3d9;border-bottom-color:#b76f47;filter:blur(2px);transform:rotate(22deg);box-shadow:0 0 25px #f5ad659c;z-index:4;pointer-events:none}
+.star-label{top:calc(100% + 12px);z-index:5}
+.star-label small{letter-spacing:.1em}
+.star-entry:hover:before{box-shadow:0 0 68px 18px #eab87966,0 0 160px 50px #a96d6944}
+body.entering-universe .star-entry{transform:translate(-50%,-50%) scale(7);opacity:1;filter:brightness(.5);transition:transform 1.25s cubic-bezier(.53,.08,.8,.21),filter 1.2s,opacity .2s 1.1s}
+body.entering-universe .star-label{opacity:0}
+body.entering-universe #space{transform:scale(5);filter:blur(6px) brightness(.35)}
+body.entering-universe .auth-wall{background:radial-gradient(circle,#000 17%,#130c16de 70%,#010205 100%)}
+body.white-emergence #space{transform:scale(.65);filter:brightness(2.8) blur(3px)}
+.white-flash{position:fixed;z-index:100;inset:0;opacity:0;visibility:hidden;pointer-events:none;background:radial-gradient(circle at center,#fff 0%,#fffff4 28%,#d7e8ff 55%,#5b7da5 90%);transition:opacity .5s ease}
+body.white-emergence .white-flash{visibility:visible;animation:white-birth 1.65s ease-in-out forwards}
+@keyframes accrete{to{transform:rotate(331deg) scaleY(.38)}}
+@keyframes white-birth{0%{opacity:0}25%{opacity:1}65%{opacity:1}100%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.hole-disk{animation:none!important}body.entering-universe .star-entry,body.entering-universe #space{transition:none!important}body.white-emergence .white-flash{animation:none!important;display:none!important}}
+
 @media(max-width:650px){.cosmic-headline{top:15%;font-size:clamp(35px,10vw,55px)}.star-entry{top:49%}.star-label{font-size:10px}.auth-card{padding:26px}.cosmic-footer{font-size:9px}}
 @media(prefers-reduced-motion:reduce){#space,.auth-card,.star-entry{transition:none!important}.star-entry:before{animation:none!important}}
 
@@ -64,15 +89,15 @@ body.entering-universe .star-entry{transform:translate(-50%,-50%) scale(3.3);opa
 <section class="intro"><div class="tag">Every idea begins somewhere</div><h1>Your imagination<br>has a universe.</h1><p>Start a thought. Watch it become a constellation.</p></section>
 <aside class="idea-list" id="ideas" aria-label="Saved ideas"></aside>
 <nav class="actions"><button id="add">+ Create an idea</button><button id="all">View all stars</button></nav>
-<div id="modal"></div>
-<section class="auth-wall" id="auth-wall"><div class="cosmic-eyebrow">THE CREATIVE UNIVERSE &nbsp; · &nbsp; FERN & LYRA</div><div class="cosmic-headline">Your ideas are <em>infinite.</em></div><button type="button" class="star-entry" id="portal-star" aria-label="Enter your universe to sign in"><span class="star-orbit"></span><span class="star-orbit second"></span><span class="star-label">Enter your universe<small>✦ Click the star to begin ✦</small></span></button><div class="cosmic-footer">A UNIVERSE FOR EVERY IMAGINATION · YOUR IDEAS LIVE HERE</div><form class="auth-card" id="auth-form"><button class="portal-back" type="button" id="portal-back" aria-label="Return to galaxy">← Back to galaxy</button><div class="tag">A private universe for every mind</div><h2>Enter your universe.</h2><p>Sign in or create an account to save your stars across devices.</p><input id="email" type="email" autocomplete="email" placeholder="Email address" required><input id="password" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required><div class="auth-buttons"><button type="submit">Sign in</button><button class="secondary" type="button" id="signup">Create account</button></div><p class="auth-error" id="auth-error" role="status"></p></form></section>
+<div id="modal"></div><div class="white-flash" aria-hidden="true"></div>
+<section class="auth-wall" id="auth-wall"><div class="cosmic-eyebrow">THE CREATIVE UNIVERSE &nbsp; · &nbsp; FERN & LYRA</div><div class="cosmic-headline">Beyond the <em>event horizon.</em></div><button type="button" class="star-entry" id="portal-star" aria-label="Enter the black hole to sign in"><span class="hole-lens"></span><span class="hole-disk"></span><span class="hole-arcs"></span><span class="star-label">Cross the event horizon<small>✦ Click the black hole to enter ✦</small></span></button><div class="cosmic-footer">EVERY UNIVERSE BEGINS WITH A LEAP INTO THE UNKNOWN</div><form class="auth-card" id="auth-form"><button class="portal-back" type="button" id="portal-back" aria-label="Return to galaxy">← Back to galaxy</button><div class="tag">A private universe for every mind</div><h2>Enter your universe.</h2><p>Sign in or create an account to save your stars across devices.</p><input id="email" type="email" autocomplete="email" placeholder="Email address" required><input id="password" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required><div class="auth-buttons"><button type="submit">Sign in</button><button class="secondary" type="button" id="signup">Create account</button></div><p class="auth-error" id="auth-error" role="status"></p></form></section>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.95.0/+esm';
 const db=createClient('https://gzsxyjysdrqzqeeqadbu.supabase.co','sb_publishable_wPJwCUJl6ytV8XzfmjTX0g_Nm8D2kax');
 let ideas=[],currentUser=null;const list=document.getElementById('ideas');let belt=false;
 const errText=e=>e?.message||'Something went wrong. Please try again.';
 async function loadIdeas(){if(!currentUser){ideas=[];renderList();return}const {data,error}=await db.from('creative_universe_ideas').select('id,title,description,status,created_at').order('created_at',{ascending:false});if(error){alert(errText(error));return}ideas=data||[];renderList()}
-function setUser(user){currentUser=user;document.getElementById('auth-wall').hidden=!!user;document.getElementById('signout').hidden=!user;loadIdeas()}
+function setUser(user){const entering=!!user&&!currentUser&&document.getElementById('auth-wall').classList.contains('portal-open');currentUser=user;document.getElementById('signout').hidden=!user;if(entering){document.body.classList.add('white-emergence');setTimeout(()=>{document.getElementById('auth-wall').hidden=true;document.getElementById('auth-wall').classList.remove('portal-open');document.body.classList.remove('white-emergence');loadIdeas()},1650)}else{document.getElementById('auth-wall').hidden=!!user;loadIdeas()}}
 const portalWall=document.getElementById('auth-wall');let portalTimer=null;
 document.getElementById('portal-star').onclick=()=>{if(portalWall.classList.contains('portal-open'))return;document.body.classList.add('entering-universe');clearTimeout(portalTimer);portalTimer=setTimeout(()=>{document.body.classList.remove('entering-universe');portalWall.classList.add('portal-open');document.getElementById('email').focus()},matchMedia('(prefers-reduced-motion: reduce)').matches?0:1100)};
 document.getElementById('portal-back').onclick=()=>{clearTimeout(portalTimer);document.body.classList.remove('entering-universe');portalWall.classList.remove('portal-open');document.getElementById('portal-star').focus()};
