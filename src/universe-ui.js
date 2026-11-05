@@ -13,6 +13,43 @@ canvas{position:fixed;inset:0;width:100%;height:100%;display:block}body:before{c
 .idea-list{position:fixed;z-index:4;top:90px;right:clamp(12px,3vw,45px);width:min(260px,35vw);max-height:55vh;overflow:auto}.idea{display:block;width:100%;text-align:left;background:#121b2bb8;color:#eee6dc;border:1px solid #76819450;border-radius:10px;padding:9px 12px;margin-bottom:8px;cursor:pointer;font-size:12px}.idea small{display:block;color:#a9b5c1}.idea.discarded{opacity:.65;border-color:#9a8b7860}.empty{color:#acb5c5;font-size:12px}
 .dialog-backdrop{position:fixed;z-index:10;inset:0;background:#000a;display:grid;place-items:center;padding:20px}.dialog{width:min(460px,100%);background:#111a29;border:1px solid #a69d815c;border-radius:18px;padding:24px;box-shadow:0 25px 90px #000}.dialog h2{font:30px Georgia,serif;margin:0 0 13px}.dialog input,.dialog textarea{display:block;width:100%;border:1px solid #68758d;background:#060e1b;color:white;border-radius:9px;padding:12px;margin:12px 0;font:inherit}.dialog textarea{min-height:105px}.dialog .controls{display:flex;flex-wrap:wrap;gap:8px}.dialog button.primary{background:#d2bd91;color:#10151e}.notice{font-size:11px;color:#abb8c8;line-height:1.5}
 .auth-wall{position:fixed;z-index:20;inset:0;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at center,#14243bf2,#02050b 75%)}.auth-wall[hidden]{display:none}.auth-card{width:min(430px,100%);padding:30px;background:#101a2bf0;border:1px solid #c9b68b77;border-radius:20px}.auth-card h2{font:35px Georgia,serif;margin:8px 0 10px}.auth-card p{color:#b6c2d0;font-size:13px}.auth-card input{display:block;width:100%;padding:13px;margin:11px 0;background:#07101f;color:#fff;border:1px solid #617089;border-radius:10px;font:inherit}.auth-buttons{display:flex;gap:8px;flex-wrap:wrap}.auth-buttons button{cursor:pointer;padding:12px;border-radius:12px;border:1px solid #b9a783;background:#d2bd91;color:#10151e}.auth-buttons button.secondary{background:#19283d;color:#f2e9da}.auth-error{min-height:20px;color:#f4b3a9!important}
+
+/* The entrance is a navigable star, suspended above the actual WebGL galaxy. */
+#space{transition:transform 1.4s cubic-bezier(.15,.72,.16,1),filter 1.4s ease;transform-origin:50% 48%}
+body.entering-universe #space{transform:scale(3.7);filter:brightness(1.8) blur(2px)}
+.auth-wall{display:block;overflow:hidden;padding:0;background:radial-gradient(circle at 50% 47%,#080c1b10 0%,#02050a45 42%,#01020ab8 100%);isolation:isolate}
+.auth-wall:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,#7f9fe212 0%,transparent 33%),linear-gradient(90deg,#02040a75,transparent 28%,transparent 72%,#02040a75);z-index:-1}
+.auth-wall:after{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(#d8e6ff80 .6px,transparent 1px);background-size:87px 93px;opacity:.32}
+.cosmic-eyebrow{position:absolute;z-index:2;top:clamp(35px,7vh,95px);left:0;right:0;text-align:center;text-transform:uppercase;letter-spacing:.42em;color:#c6bda7;font-size:clamp(9px,1vw,12px);text-shadow:0 1px 12px #000}
+.cosmic-headline{position:absolute;z-index:2;top:clamp(76px,14vh,160px);left:5%;right:5%;text-align:center;font:400 clamp(36px,6vw,82px)/1 Georgia,serif;letter-spacing:-.045em;color:#f5f2ed;text-shadow:0 4px 45px #020511,0 0 35px #9c98bd4d;pointer-events:none}
+.cosmic-headline em{font-weight:400;color:#ebce9e}
+.star-entry{position:absolute;z-index:4;left:50%;top:53%;transform:translate(-50%,-50%);width:clamp(170px,25vw,300px);height:clamp(170px,25vw,300px);border:none;border-radius:50%;background:transparent;color:white;cursor:pointer;display:grid;place-items:center;transition:transform .6s ease,opacity .4s ease}
+.star-entry:focus-visible{outline:2px solid #f3d8a3;outline-offset:22px}
+.star-entry:before{content:"";position:absolute;inset:16%;border-radius:50%;background:radial-gradient(circle,#fff 0%,#fff9d5 4%,#ffc783 12%,#9878d9 21%,#6855aa55 40%,transparent 70%);filter:blur(2px);box-shadow:0 0 35px 8px #e7b9e567,0 0 115px 35px #8c68c666;animation:star-breathe 4s ease-in-out infinite}
+.star-entry:after{content:"";position:absolute;width:12px;height:12px;left:50%;top:50%;transform:translate(-50%,-50%) rotate(45deg);background:#fff;box-shadow:0 0 30px 12px #fff0d3;filter:blur(1px)}
+.star-orbit{position:absolute;inset:3%;border:1px solid #d3acdd60;border-radius:50%;transform:rotate(-26deg) scaleY(.4);box-shadow:0 0 32px #af94e680;pointer-events:none}
+.star-orbit.second{inset:0;transform:rotate(35deg) scaleY(.55);opacity:.45}
+.star-label{position:absolute;top:calc(100% - 4px);left:50%;transform:translateX(-50%);white-space:nowrap;letter-spacing:.26em;text-transform:uppercase;font-size:11px;color:#f5e0c0;text-shadow:0 3px 20px #000}
+.star-label small{display:block;letter-spacing:.14em;color:#b5bed1;margin-top:11px;font-size:10px}
+.star-entry:hover{transform:translate(-50%,-50%) scale(1.12)}
+.cosmic-footer{position:absolute;bottom:29px;left:15px;right:15px;text-align:center;color:#a8b2c6;font-size:11px;letter-spacing:.18em;pointer-events:none}
+.auth-card{position:absolute;z-index:5;top:50%;left:50%;transform:translate(-50%,-46%) scale(.9);opacity:0;visibility:hidden;pointer-events:none;width:min(430px,calc(100vw - 34px));padding:34px;background:linear-gradient(145deg,#0b1429f5,#10162ae8 55%,#201529ed);border:1px solid #d1b88d91;border-radius:24px;box-shadow:0 0 0 1px #f0d29c12,0 30px 100px #000d,0 0 100px #7e5e9755;backdrop-filter:blur(16px);transition:transform .6s ease,opacity .6s ease,visibility .6s}
+.auth-card:before{content:"✦";position:absolute;right:30px;top:23px;color:#ebce9e;font-size:29px;text-shadow:0 0 30px #f5c991}
+.auth-card h2{font-size:clamp(33px,4vw,47px);letter-spacing:-.035em}
+.auth-card .tag{display:block;color:#d2bd91}
+.auth-card input{border-color:#a19bb86e;background:#070d20de;outline-offset:3px}
+.auth-card input:focus{outline:2px solid #e5c78d}
+.auth-wall.portal-open .auth-card{opacity:1;visibility:visible;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
+.auth-wall.portal-open .star-entry,.auth-wall.portal-open .cosmic-headline,.auth-wall.portal-open .cosmic-eyebrow,.auth-wall.portal-open .cosmic-footer{opacity:0;pointer-events:none}
+.portal-back{float:right;position:relative;z-index:2;background:transparent;border:0;color:#d6c3a9;cursor:pointer;font-size:12px;letter-spacing:.1em}
+.portal-back:hover{text-decoration:underline}
+.auth-buttons button:hover{filter:brightness(1.14)}
+@keyframes star-breathe{50%{filter:brightness(1.6) blur(1px);box-shadow:0 0 60px 14px #edcae688,0 0 150px 50px #ac83de7a}}
+body.entering-universe .auth-wall{background:radial-gradient(circle at 50% 50%,#eacbce77,#0a0713bc 50%,#000b)}
+body.entering-universe .star-entry{transform:translate(-50%,-50%) scale(3.3);opacity:0;pointer-events:none}
+@media(max-width:650px){.cosmic-headline{top:15%;font-size:clamp(35px,10vw,55px)}.star-entry{top:49%}.star-label{font-size:10px}.auth-card{padding:26px}.cosmic-footer{font-size:9px}}
+@media(prefers-reduced-motion:reduce){#space,.auth-card,.star-entry{transition:none!important}.star-entry:before{animation:none!important}}
+
 @media(max-width:650px){.top{padding:17px}.tag{display:none}.intro{top:30%}.idea-list{top:auto;bottom:95px;left:18px;right:18px;width:auto;max-height:28vh}.actions{bottom:20px}.actions button{padding:10px;font-size:12px}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style></head><body>
@@ -22,7 +59,7 @@ canvas{position:fixed;inset:0;width:100%;height:100%;display:block}body:before{c
 <aside class="idea-list" id="ideas" aria-label="Saved ideas"></aside>
 <nav class="actions"><button id="add">+ Create an idea</button><button id="all">View all stars</button></nav>
 <div id="modal"></div>
-<section class="auth-wall" id="auth-wall"><form class="auth-card" id="auth-form"><div class="tag">A private universe for every mind</div><h2>Enter your universe.</h2><p>Sign in or create an account to save your stars across devices.</p><input id="email" type="email" autocomplete="email" placeholder="Email address" required><input id="password" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required><div class="auth-buttons"><button type="submit">Sign in</button><button class="secondary" type="button" id="signup">Create account</button></div><p class="auth-error" id="auth-error" role="status"></p></form></section>
+<section class="auth-wall" id="auth-wall"><div class="cosmic-eyebrow">THE CREATIVE UNIVERSE &nbsp; · &nbsp; FERN & LYRA</div><div class="cosmic-headline">Your ideas are <em>infinite.</em></div><button type="button" class="star-entry" id="portal-star" aria-label="Enter your universe to sign in"><span class="star-orbit"></span><span class="star-orbit second"></span><span class="star-label">Enter your universe<small>✦ Click the star to begin ✦</small></span></button><div class="cosmic-footer">A UNIVERSE FOR EVERY IMAGINATION · YOUR IDEAS LIVE HERE</div><form class="auth-card" id="auth-form"><button class="portal-back" type="button" id="portal-back" aria-label="Return to galaxy">← Back to galaxy</button><div class="tag">A private universe for every mind</div><h2>Enter your universe.</h2><p>Sign in or create an account to save your stars across devices.</p><input id="email" type="email" autocomplete="email" placeholder="Email address" required><input id="password" type="password" autocomplete="current-password" placeholder="Password" minlength="6" required><div class="auth-buttons"><button type="submit">Sign in</button><button class="secondary" type="button" id="signup">Create account</button></div><p class="auth-error" id="auth-error" role="status"></p></form></section>
 <script type="module">
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.95.0/+esm';
 const db=createClient('https://gzsxyjysdrqzqeeqadbu.supabase.co','sb_publishable_wPJwCUJl6ytV8XzfmjTX0g_Nm8D2kax');
@@ -30,6 +67,10 @@ let ideas=[],currentUser=null;const list=document.getElementById('ideas');let be
 const errText=e=>e?.message||'Something went wrong. Please try again.';
 async function loadIdeas(){if(!currentUser){ideas=[];renderList();return}const {data,error}=await db.from('creative_universe_ideas').select('id,title,description,status,created_at').order('created_at',{ascending:false});if(error){alert(errText(error));return}ideas=data||[];renderList()}
 function setUser(user){currentUser=user;document.getElementById('auth-wall').hidden=!!user;document.getElementById('signout').hidden=!user;loadIdeas()}
+const portalWall=document.getElementById('auth-wall');let portalTimer=null;
+document.getElementById('portal-star').onclick=()=>{if(portalWall.classList.contains('portal-open'))return;document.body.classList.add('entering-universe');clearTimeout(portalTimer);portalTimer=setTimeout(()=>{document.body.classList.remove('entering-universe');portalWall.classList.add('portal-open');document.getElementById('email').focus()},matchMedia('(prefers-reduced-motion: reduce)').matches?0:1100)};
+document.getElementById('portal-back').onclick=()=>{clearTimeout(portalTimer);document.body.classList.remove('entering-universe');portalWall.classList.remove('portal-open');document.getElementById('portal-star').focus()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!portalWall.hidden&&portalWall.classList.contains('portal-open'))document.getElementById('portal-back').click()});
 const authError=document.getElementById('auth-error');document.getElementById('auth-form').onsubmit=async e=>{e.preventDefault();authError.textContent='Signing in…';const {error}=await db.auth.signInWithPassword({email:document.getElementById('email').value,password:document.getElementById('password').value});authError.textContent=error?errText(error):''};
 document.getElementById('signup').onclick=async()=>{authError.textContent='Creating your account…';const {data,error}=await db.auth.signUp({email:document.getElementById('email').value,password:document.getElementById('password').value,options:{emailRedirectTo:location.origin+'/'}});authError.textContent=error?errText(error):(data.session?'Welcome to your universe.':'Check your email to confirm your account, then sign in.')};
 document.getElementById('signout').onclick=async()=>{await db.auth.signOut()};
