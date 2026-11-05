@@ -14,6 +14,12 @@ canvas{position:fixed;inset:0;width:100%;height:100%;display:block}body:before{c
 .dialog-backdrop{position:fixed;z-index:10;inset:0;background:#000a;display:grid;place-items:center;padding:20px}.dialog{width:min(460px,100%);background:#111a29;border:1px solid #a69d815c;border-radius:18px;padding:24px;box-shadow:0 25px 90px #000}.dialog h2{font:30px Georgia,serif;margin:0 0 13px}.dialog input,.dialog textarea{display:block;width:100%;border:1px solid #68758d;background:#060e1b;color:white;border-radius:9px;padding:12px;margin:12px 0;font:inherit}.dialog textarea{min-height:105px}.dialog .controls{display:flex;flex-wrap:wrap;gap:8px}.dialog button.primary{background:#d2bd91;color:#10151e}.notice{font-size:11px;color:#abb8c8;line-height:1.5}
 .auth-wall{position:fixed;z-index:20;inset:0;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at center,#14243bf2,#02050b 75%)}.auth-wall[hidden]{display:none}.auth-card{width:min(430px,100%);padding:30px;background:#101a2bf0;border:1px solid #c9b68b77;border-radius:20px}.auth-card h2{font:35px Georgia,serif;margin:8px 0 10px}.auth-card p{color:#b6c2d0;font-size:13px}.auth-card input{display:block;width:100%;padding:13px;margin:11px 0;background:#07101f;color:#fff;border:1px solid #617089;border-radius:10px;font:inherit}.auth-buttons{display:flex;gap:8px;flex-wrap:wrap}.auth-buttons button{cursor:pointer;padding:12px;border-radius:12px;border:1px solid #b9a783;background:#d2bd91;color:#10151e}.auth-buttons button.secondary{background:#19283d;color:#f2e9da}.auth-error{min-height:20px;color:#f4b3a9!important}
 
+/* Keep authenticated workspace completely hidden while the entry portal is visible. */
+body:has(#auth-wall:not([hidden])) .top,
+body:has(#auth-wall:not([hidden])) .intro,
+body:has(#auth-wall:not([hidden])) .idea-list,
+body:has(#auth-wall:not([hidden])) .actions,
+body:has(#auth-wall:not([hidden])) #modal {visibility:hidden;pointer-events:none}
 /* The entrance is a navigable star, suspended above the actual WebGL galaxy. */
 #space{transition:transform 1.4s cubic-bezier(.15,.72,.16,1),filter 1.4s ease;transform-origin:50% 48%}
 body.entering-universe #space{transform:scale(3.7);filter:brightness(1.8) blur(2px)}
