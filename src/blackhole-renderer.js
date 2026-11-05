@@ -1,15 +1,15 @@
-// Cinematic Creative Universe black hole (native WebGL; no external runtime dependency).
+export const BLACKHOLE_SCRIPT = `// Cinematic Creative Universe black hole (native WebGL; no external runtime dependency).
 // Visual is an artistic, scientifically inspired shader, not a physical GR simulation.
 (() => {
   const canvas = document.getElementById('blackhole-space');
   if (!canvas) return;
   const gl = canvas.getContext('webgl', {alpha:true,antialias:false,premultipliedAlpha:false,powerPreference:'low-power'});
   if (!gl) { document.documentElement.classList.add('no-blackhole-webgl'); return; }
-  const vertex = `
+  const vertex = \`
 attribute vec2 position;
 void main(){gl_Position=vec4(position,0.0,1.0);}
-`;
-  const fragment = `
+\`;
+  const fragment = \`
 precision highp float;
 uniform vec2 resolution;
 uniform float time;
@@ -79,7 +79,7 @@ void main(){
  col=tone(col);
  gl_FragColor=vec4(col,alpha);
 }
-`;
+\`;
   function compile(kind,source) {
     const shader=gl.createShader(kind);gl.shaderSource(shader,source);gl.compileShader(shader);
     if(!gl.getShaderParameter(shader,gl.COMPILE_STATUS)){
@@ -126,3 +126,4 @@ void main(){
   }
   requestAnimationFrame(draw);
 })();
+`;
