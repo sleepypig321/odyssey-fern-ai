@@ -1,4 +1,5 @@
 import { HTML } from "./ui.js";
+import { UNIVERSE_HTML } from "./universe-ui.js";
 import { finishReply } from "./reply.js";
 import { EMBED_SCRIPT } from "./embed.js";
 import { publicCatalog } from "./catalog.js";
@@ -84,6 +85,7 @@ export default {
     const url = new URL(request.url);
     const path = url.pathname;
     if (request.method === "GET") {
+      if (path === "/universe") return new Response(UNIVERSE_HTML,{headers:{"Content-Type":"text/html; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"no-store"}});
       if (path === "/" || path === "/index.html") {
         return new Response(HTML,{headers:{"Content-Type":"text/html; charset=utf-8","X-Content-Type-Options":"nosniff","Referrer-Policy":"no-referrer","Cache-Control":"no-store"}});
       }
