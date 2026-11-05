@@ -1,5 +1,6 @@
 import { HTML } from "./ui.js";
 import { UNIVERSE_HTML } from "./universe-ui.js";
+import { BLACKHOLE_SCRIPT } from "./blackhole-renderer.js";
 import { finishReply } from "./reply.js";
 import { EMBED_SCRIPT } from "./embed.js";
 import { publicCatalog } from "./catalog.js";
@@ -86,6 +87,7 @@ export default {
     const path = url.pathname;
     if (request.method === "GET") {
       if (path === "/" || path === "/index.html" || path === "/universe") return new Response(UNIVERSE_HTML,{headers:{"Content-Type":"text/html; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"no-store"}});
+      if (path === "/blackhole.js") return new Response(BLACKHOLE_SCRIPT,{headers:{"Content-Type":"application/javascript; charset=utf-8","X-Content-Type-Options":"nosniff","Cache-Control":"no-store"}});
       if (path === "/fern") {
         return new Response(HTML,{headers:{"Content-Type":"text/html; charset=utf-8","X-Content-Type-Options":"nosniff","Referrer-Policy":"no-referrer","Cache-Control":"no-store"}});
       }
