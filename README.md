@@ -61,3 +61,10 @@ Fern itself has no conversation database. The widget retains conversation turns 
 - Browser Origin checks reduce cross-site calls but are not customer authentication. The public chatbot is intentionally anonymous; the Cloudflare Rate Limiting binding helps reduce accidental or automated excess.
 - Model instructions alone cannot guarantee medical-safety compliance; test and maintain it.
 - The bot does not collect or require a customer's medical history, contact information, or age through chat. Do not enter sensitive personal information.
+
+
+## The Creative Universe prototype (development branch)
+
+This branch is a standalone prototype for The Creative Universe. Its homepage is the experimental WebGL universe and local-only idea map. The original Odyssey Herbals Fern assistant remains on `main` and is not changed by this branch.
+
+Deploy this branch to the separate Cloudflare Worker `the-creative-universe` with Workers Builds production branch set to `creative-universe`. The prototype currently stores ideas only in browser localStorage and does not yet provide accounts, cloud synchronization, or live Fern/Lyra AI conversations.
