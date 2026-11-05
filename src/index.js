@@ -1,5 +1,6 @@
 import { HTML } from "./ui.js";
 import { UNIVERSE_HTML } from "./universe-ui.js";
+import { creativeUniverseChat } from "./universe-chat.js";
 import { finishReply } from "./reply.js";
 import { EMBED_SCRIPT } from "./embed.js";
 import { publicCatalog } from "./catalog.js";
@@ -96,6 +97,7 @@ export default {
       if (path === "/api/catalog") return json(publicCatalog());
       return json({error:"Not found."},404);
     }
+    if (path === "/api/universe/chat" && request.method === "POST") return creativeUniverseChat(request,env);
     if (request.method !== "POST") return json({error:"Method not allowed."},405);
     if (path !== "/api/chat" && path !== "/api/v1/chat") return json({error:"Not found."},404);
     if (path === "/api/chat" && !isSameOriginBrowserPost(request)) return json({error:"Cross-site requests aren't permitted; embed Fern using the iframe or widget."},403);
